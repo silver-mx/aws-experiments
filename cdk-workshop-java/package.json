@@ -1,0 +1,14 @@
+{
+  "name": "cdk-workshop-java",
+  "version": "1.0.0",
+  "description": "You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`CdkWorkshopJavaStack`) which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0"
+  }
+}
