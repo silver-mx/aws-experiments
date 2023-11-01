@@ -45,11 +45,24 @@
             <version>${constructs.version}</version>
         </dependency>
 
+        <!-- Additional Construct Libraries -->
         <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>${junit.version}</version>
-          <scope>test</scope>
+            <groupId>io.github.cdklabs</groupId>
+            <artifactId>cdk-dynamo-table-view</artifactId>
+            <version>0.2.487</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>software.amazon.jsii</groupId>
+                    <artifactId>jsii-runtime</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

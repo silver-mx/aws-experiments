@@ -1,5 +1,6 @@
 package com.myorg;
 
+import io.github.cdklabs.dynamotableviewer.TableViewer;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.LambdaRestApi;
@@ -25,18 +26,25 @@ public class CdkWorkshopJavaStack extends Stack {
                 .build();
 
         // HelloLambda + HitCounter logic
-        HitCounter hitCounter = new HitCounter(this, "HelloHitCounter", HitCounterProps.builder()
+        HitCounter hitCounterLambda = new HitCounter(this, "HelloHitCounter", HitCounterProps.builder()
                 .downstream(helloLambda)
                 .build());
 
         LambdaRestApi apiGateway = LambdaRestApi.Builder.create(this, "Endpoint")
-                .proxy(false) // use true to allow any request to call the lambda function
-                .handler(hitCounter.getHandler())
+                //.proxy(false) // use true to allow any request to call the lambda function
+                .handler(hitCounterLambda.getHandler())
                 .build();
 
-        apiGateway.getRoot()
+        /*apiGateway.getRoot()
                 .addResource("call-lambda")
-                .addMethod("POST");
+                .addMethod("POST");*/
+
+        // Defines a viewer (HTML) for the HitCounts table
+        TableViewer.Builder.create(this, "ViewerHitCount")
+                .title("Hello Hits")
+                .sortBy("-hits")
+                .table(hitCounterLambda.getTable())
+                .build();
     }
 
 }

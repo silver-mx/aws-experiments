@@ -1,6 +1,7 @@
 package com.myorg;
 
 import org.jetbrains.annotations.NotNull;
+import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.services.dynamodb.Attribute;
 import software.amazon.awscdk.services.dynamodb.AttributeType;
 import software.amazon.awscdk.services.dynamodb.Table;
@@ -24,6 +25,7 @@ public class HitCounter extends Construct {
                 .build();
         this.table = Table.Builder.create(this, "Hits")
                 .partitionKey(partitionKey)
+                .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
 
         Map<String, String> environment = Map.of(
