@@ -5,12 +5,16 @@ import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.services.dynamodb.Attribute;
 import software.amazon.awscdk.services.dynamodb.AttributeType;
 import software.amazon.awscdk.services.dynamodb.Table;
+import software.amazon.awscdk.services.dynamodb.TableEncryption;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.constructs.Construct;
 
 import java.util.Map;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 public class HitCounter extends Construct {
     private final Function handler;
@@ -19,12 +23,21 @@ public class HitCounter extends Construct {
     public HitCounter(@NotNull Construct scope, @NotNull String id, final HitCounterProps props) {
         super(scope, id);
 
+        if (nonNull(props.getReadCapacity())) {
+            if (props.getReadCapacity().intValue() < 5 || props.getReadCapacity().intValue() > 20) {
+                throw new IllegalArgumentException("readCapacity must be greater than 5 or less than 20");
+            }
+        }
+
         Attribute partitionKey = Attribute.builder()
                 .name("path")
                 .type(AttributeType.STRING)
                 .build();
+
         this.table = Table.Builder.create(this, "Hits")
                 .partitionKey(partitionKey)
+                .encryption(TableEncryption.AWS_MANAGED)
+                .readCapacity(nonNull(props.getReadCapacity()) ? props.getReadCapacity() : 5)
                 .removalPolicy(RemovalPolicy.DESTROY)
                 .build();
 
