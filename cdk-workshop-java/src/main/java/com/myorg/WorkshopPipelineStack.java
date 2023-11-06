@@ -41,6 +41,9 @@ public class WorkshopPipelineStack extends Stack {
                         .build())
                 .build();
 
+        WorkshopPipelineStage deployStage = new WorkshopPipelineStage(this, "Deploy");
+        pipeline.addStage(deployStage);
+
     }
 
 }
