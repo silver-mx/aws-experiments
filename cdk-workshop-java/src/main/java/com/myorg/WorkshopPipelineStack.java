@@ -37,6 +37,7 @@ public class WorkshopPipelineStack extends Stack {
                                 "mvn package",
                                 "npx cdk synth"
                         ))
+                        .primaryOutputDirectory("cdk-workshop-java/cdk.out")// Required as cdk-workshop-java is a subfolder in the repo.
                         .build())
                 .build();
 
