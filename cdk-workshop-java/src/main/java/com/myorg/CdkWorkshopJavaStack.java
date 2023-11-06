@@ -1,6 +1,7 @@
 package com.myorg;
 
 import io.github.cdklabs.dynamotableviewer.TableViewer;
+import software.amazon.awscdk.CfnOutput;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.LambdaRestApi;
@@ -10,6 +11,9 @@ import software.amazon.awscdk.services.lambda.Runtime;
 import software.constructs.Construct;
 
 public class CdkWorkshopJavaStack extends Stack {
+
+    public final CfnOutput hcViewerUrl;
+    public final CfnOutput hcEndpoint;
 
     public CdkWorkshopJavaStack(final Construct parent, final String id) {
         this(parent, id, null);
@@ -40,10 +44,18 @@ public class CdkWorkshopJavaStack extends Stack {
                 .addMethod("POST");*/
 
         // Defines a viewer (HTML) for the HitCounts table
-        TableViewer.Builder.create(this, "ViewerHitCount")
+        TableViewer tableViewer = TableViewer.Builder.create(this, "ViewerHitCount")
                 .title("Hello Hits")
                 .sortBy("-hits")
                 .table(hitCounterLambda.getTable())
+                .build();
+
+        hcViewerUrl = CfnOutput.Builder.create(this, "TableViewerUrl")
+                .value(tableViewer.getEndpoint())
+                .build();
+
+        hcEndpoint = CfnOutput.Builder.create(this, "GatewayUrl")
+                .value(apiGateway.getUrl())
                 .build();
     }
 
