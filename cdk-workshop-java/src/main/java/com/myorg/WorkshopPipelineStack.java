@@ -63,10 +63,6 @@ public class WorkshopPipelineStack extends Stack {
                         ))
                         .build()
         );
-
-
-        );
-
     }
 
 }
