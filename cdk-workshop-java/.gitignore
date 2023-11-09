@@ -14,3 +14,5 @@ cdk.out
 # NPM stuff
 node_modules/
 
+
+/**/synth.yaml
